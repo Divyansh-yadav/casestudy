@@ -1,0 +1,44 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+    <mat-toolbar> <img id="profile-img" class="icon" src="assets/icon.png"></mat-toolbar>
+    <mat-nav-list>
+        <mat-nav-list>
+            <a mat-list-item href="/customer"> Home</a>
+            <a mat-list-item href="/cart">Cart</a>
+            <a mat-list-item href="/trackOrder"> Track Order</a>
+            <a mat-list-item href="/feedback">Feedback</a>
+            <a mat-list-item (click)=" logout()">Logout</a>
+          </mat-nav-list>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="navbar-text white-text">
+        Hi {{userName}}
+      </span>
+
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<toaster-container [toasterconfig]="config1"></toaster-container>
+<div class="container" style="margin-left: 0px;">
+  <div class="card card-container">
+    <div class="form-group">
+      <h2>Feedback Form</h2><br>
+      <div>
+        <input type="radio" name="feedback" value="Excellent" [(ngModel)]="customerFeedback.feedback">Excellent<br>
+        <input type="radio" name="feedback" value="Good" [(ngModel)]="customerFeedback.feedback">Good<br>
+        <input type="radio" name="feedback" value="Bad" [(ngModel)]="customerFeedback.feedback">Bad<br><br>
+      </div>
+
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Leave a comment" [(ngModel)]="customerFeedback.comments"></textarea>
+      </mat-form-field>
+      <button mat-button color="primary" (click)="updateFeedback()">Submit</button>
+    </div>
+  </div>
+</div>

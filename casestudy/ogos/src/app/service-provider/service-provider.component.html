@@ -1,0 +1,78 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+    <mat-toolbar><img id="profile-img" class="icon" src="assets/icon.png"></mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item (click)=" logout()">Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="navbar-text white-text">
+        Hi {{userName}}
+      </span>
+
+    </mat-toolbar>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<toaster-container [toasterconfig]="config1"></toaster-container>
+<div *ngIf="!mat;else other_content">
+  <div *ngIf="!isdata;else other_content">
+    <div class="container"><br><br>
+      <h1>Customer Details</h1><br><br>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">House No.</th>
+            <th scope="col">Landmark</th>
+            <th scope="col">Address</th>
+            <th scope="col">Current Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let obj of sp">
+          <tr>
+            <td>{{obj.orderId.orderId}}</td>
+            <td>{{obj.userId.userName}}</td>
+            <td>{{obj.customerDetail.houseNo}}</td>
+            <td>{{obj.customerDetail.landmark}}</td>
+            <td>{{obj.customerDetail.address}}</td>
+            <td>{{obj.deliveryStatus}}</td>
+            <td>
+              <div *ngIf="obj.deliveryStatus=='placed'">
+                <button class="btn btn-success" (click)="updateStatus('Dispatch', obj.providerid)" type="submit">Dispatch
+                </button>&nbsp;&nbsp;</div>
+              <div *ngIf="obj.deliveryStatus=='Dispatch'"><button class="btn btn-success" (click)="updateStatus('On The Way',obj.providerid)"
+                  type="submit">On The Way </button>&nbsp;&nbsp;
+              </div>
+              <div *ngIf="obj.deliveryStatus=='On The Way'"><button class="btn btn-success" (click)="updateStatus('Delievered',obj.providerid)"
+                  type="submit">Delievered </button>&nbsp;
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+  <div *ngIf="isdata;else other_content">
+    <div class="container">
+      <h1>No Order For Delivery</h1>
+    </div>
+
+  </div>
+</div>
+<div *ngIf="mat" class="container" style="margin-left: 45%;
+        margin-top: 10%;">
+
+  <mat-spinner></mat-spinner>
+</div>

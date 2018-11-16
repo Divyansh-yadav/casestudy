@@ -1,0 +1,38 @@
+<toaster-container [toasterconfig]="config1"></toaster-container>
+<div class="container">
+    <div class="card card-container">
+            <div class="profile-name-card" style="text-align: center;" >
+              
+                    <img id="" class="icon" src="assets/icon.png" >
+                   </div>
+                   <mat-card-content>
+                    <form class="demo-form">
+                        <p>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label> Email</mat-label>
+                              <input matInput placeholder="Enter  email" [formControl]="email" required>
+                              <!-- <mat-icon matSuffix (click)="hide = !hide">email</mat-icon> -->
+                              <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                          </p>        
+                          <p>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Password</mat-label>
+                              <input matInput placeholder="Enter your password" [formControl]="password" [type]="hide1 ? 'password' : 'text'"
+                                required>
+                              <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                              <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                          </p>        
+                          <button [disabled]="(email.invalid || password.invalid  )"
+                  mat-raised-button color="primary" (click)="validateUser()"
+                  class="btn btn-lg btn-primary btn-block btn-signin"
+                  > Log In</button>
+            
+        </form>
+    </mat-card-content><!-- /form -->
+        <a href="/register" class="forgot-password">
+            Create account
+        </a>
+    </div><!-- /card-container -->
+  </div><!-- /container -->

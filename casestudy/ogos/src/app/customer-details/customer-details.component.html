@@ -1,0 +1,207 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+        <mat-toolbar> <img id="profile-img" class="icon" src="assets/icon.png"></mat-toolbar>
+        <mat-nav-list>
+            <a mat-list-item href="/customer"> Home</a>
+            <a mat-list-item href="/cart">Cart</a>
+            <a mat-list-item href="/trackOrder"> Track Order</a>
+            <a mat-list-item href="/feedback">Feedback</a>
+            <a mat-list-item (click)=" logout()">Logout</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+            <span class="navbar-text white-text">
+                Hi {{userName}}
+            </span>
+        </mat-toolbar>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<div class="container">
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Fill out your address</ng-template>
+                <div class="container" style="margin-left: 0px;">
+                    <div class="card card-container">
+                        <div class="form-group">
+
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label> zipcode</mat-label>
+                                <input matInput placeholder="Enter your zipcode" [formControl]="zipcode" required
+                                    maxlength="6">
+
+                                <mat-error *ngIf="zipcode.invalid">{{ getZipcodeErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label> houseno</mat-label>
+                                <input matInput placeholder="Enter your houseno" [formControl]="houseno" required>
+                                <mat-error *ngIf="houseno.invalid">{{gethouseErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label> landmark</mat-label>
+                                <input matInput placeholder="Enter your landmark" [formControl]="landmark" required>
+
+                                <mat-error *ngIf="landmark.invalid">{{getlandmarkErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Enter Delivery Address</mat-label>
+                                <input matInput style="width: 800px;" placeholder="Enter Delivery Address" autocorrect="off"
+                                    autocapitalize="off" spellcheck="off" type="text" class="form-control" #search
+                                    [formControl]="searchControl">
+                                <mat-error *ngIf="searchControl.invalid">{{getaddresskErrorMessage()}}</mat-error>
+                            </mat-form-field>
+
+                            <agm-map style="visibility:hidden" [latitude]="latitude" [longitude]="longitude"
+                                [scrollwheel]="false" [zoom]="zoom">
+                                <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+                            </agm-map>
+
+
+                            <div *ngIf="distanceFlag==true">
+
+                                <div *ngIf="distance>30" style="color: red;">Distance must be less than 30 km.</div>
+
+                            </div>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label> Phone Number</mat-label>
+                                <input matInput placeholder="Enter your phone number" [formControl]="contactno"
+                                    required maxlength="10">
+
+                                <mat-error *ngIf="contactno.invalid">{{getContactErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <button mat-button color="primary" [disabled]="distance>30||zipcode.invalid||houseno.invalid||contactno.invalid||landmark.invalid||searchControl.invalid"
+                            (click)="adddetail(stepper)">Pay Now</button>
+                    </div>
+                </div>
+
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Fill out card Details</ng-template>
+                <div class="container" style="margin-left: 33%; margin-top: 2%;">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4">
+                            <div class="panel panel-default credit-card-box">
+                                <div class="panel-heading display-table">
+                                    <div class="row display-tr">
+                                        <h3 class="panel-title display-td">Payment Details</h3>
+                                        <div class="display-td">
+                                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <form role="form" id="payment-form" method="POST" action="javascript:void(0);">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="cardNumber">CARD NUMBER</label>
+                                                    <div class="input-group">
+                                                        <mat-form-field class="example-full-width" appearance="outline"
+                                                            style="width: 100%;">
+                                                            <mat-label> card no.</mat-label>
+                                                            <input matInput placeholder="Enter your card no"
+                                                                [formControl]="cardno" required maxlength="16">
+                                                            <mat-error *ngIf="cardno.invalid">{{getcardErrorMessage()}}</mat-error>
+                                                            <mat-icon matSuffix>credit_card</mat-icon>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-7 col-md-7">
+                                                <div class="form-group">
+                                                    <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span
+                                                            class="visible-xs-inline">EXP</span> DATE</label>
+                                                    <mat-form-field class="example-full-width" appearance="outline"
+                                                        style="width: 100%;">
+                                                        <input matInput [matDatepicker]="dp3" placeholder="Choose a date" 
+                                                            disabled>
+                                                        <mat-error *ngIf="dp3.invalid">{{getdateErrorMessage()}}</mat-error>
+
+                                                        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                                                        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5 col-md-5 pull-right">
+                                                <div class="form-group">
+                                                    <label for="cardCVC">CVV</label>
+                                                    <mat-form-field class="example-full-width" appearance="outline"
+                                                        style="width: 100%;">
+                                                        <mat-label> CVV</mat-label>
+                                                        <input matInput placeholder="Enter your password" [formControl]="cvc"
+                                                            type='password' required maxlength="3">
+                                                        <!-- <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off'
+                                                    : 'visibility'}}</mat-icon> -->
+                                                        <mat-error *ngIf="cvc.invalid">{{getcvcErrorMessage()}}</mat-error>
+
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-12">
+
+                                                <button mat-button class="subscribe btn btn-success btn-lg btn-block"
+                                                    [disabled]="cardno.invalid||cvc.invalid||dp3.invalid" (click)="buynow(stepper)">Pay
+                                                    Now</button>
+
+                                            </div>
+                                        </div>
+                                        <div class="row" style="display:none;">
+                                            <div class="col-xs-12">
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <div *ngIf="mat" class="container" style="margin-left: 45%;
+        margin-top: 10%;">
+
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf="!mat" class="container">
+                <div class="container" style="margin-left: 0px;">
+                    <div class="card card-container">
+                        <div class="form-group">
+                            <div style="text-align: center">
+                                <h2>Your Order Has Been Placed</h2>
+                            </div>
+                            <img id="" class="" src="assets/success.jpeg" style="margin-left: 118px;margin-top: 25px">
+                            <div style="text-align: center">
+                                <h3>you can track your order with order id:-<br>{{orderId}}</h3><br>
+                            </div>
+                            <div style="text-align: center">
+                                <a class="btn btn-success" href="/trackOrder">TrackOrder</a>&nbsp;&nbsp;
+                                <a class="btn btn-success" href="/customer">Go to home</a></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

@@ -1,0 +1,87 @@
+<toaster-container [toasterconfig]="config1"></toaster-container>    
+        
+<div *ngIf="!mat;else other_content">
+            <div class="card card-container">
+            <div class="profile-name-card" style="text-align: center;" >
+                <img id="" class="icon" src="assets/icon.png" >
+               </div>             
+            
+            <mat-card-content>
+              <form class="demo-form">
+                  <p>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label> Name</mat-label>
+                        <input matInput placeholder="Enter your name" [formControl]="name" required>
+                        <!-- <mat-icon matSuffix (click)="hide = !hide">Name</mat-icon> -->
+                        <mat-error *ngIf="name.invalid">{{getNameErrorMessage()}}</mat-error>
+                      </mat-form-field>
+                    </p>             
+          
+                <p>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label> Email</mat-label>
+                    <input matInput placeholder="Enter  email" [formControl]="email" required>
+                    <!-- <mat-icon matSuffix (click)="hide = !hide">email</mat-icon> -->
+                    <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+                  </mat-form-field>
+                </p>        
+          
+                <!-- <p>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput placeholder="Enter your password" [formControl]="password" [type]="hide1 ? 'password' : 'text'"
+                      required>
+                    <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+                  </mat-form-field>
+                </p>        
+          
+                <p>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput placeholder="Enter your password again" [formControl]="cpassword" [type]="hide2 ? 'password' : 'text'"
+                      required>
+                    <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="cpassword.invalid">{{getCPasswordErrorMessage()}}</mat-error>
+                  </mat-form-field>
+                </p>                        -->
+
+
+                <p>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Password</mat-label>
+                      <input matInput placeholder="Enter your password" [formControl]="password" [type]="hide1 ? 'password' : 'text'"
+                        required>
+                      <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </p>
+            
+            
+                  <p>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Confirm Password</mat-label>
+                      <input matInput placeholder="Enter your password again" [formControl]="cpassword" (input)="matchPassword()" [type]="hide2 ? 'password' : 'text'"
+                        required>
+                      <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      <mat-error *ngIf="cpassword.invalid">{{getCPasswordErrorMessage()}}</mat-error>
+                      <mat-error *ngIf="matchPassword()">Password don't match</mat-error>
+                    </mat-form-field>
+                  </p>
+                
+                <button [disabled]="(name.invalid || email.invalid || password.invalid || cpassword.invalid )"
+                  mat-raised-button color="primary" (click)="registerUser()"
+                  class="btn btn-lg btn-primary btn-block btn-signin"
+                  >Sign up</button>
+                <br>
+                <span>
+                  <a routerLink="/">Already Registered? Click Here</a>
+                </span>
+              </form>
+            </mat-card-content></div></div>
+            <div  *ngIf="mat"
+        class="container" style="margin-left: 45%;
+        margin-top: 10%;">
+        
+        <mat-spinner></mat-spinner></div>
+         

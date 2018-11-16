@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: ogos
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: pawan.nerker
+Implementation-Vendor-Id: com.impetus
+Build-Jdk: 1.8.0_161
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/ogos
+Created-By: Maven Integration for Eclipse
+

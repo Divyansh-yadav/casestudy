@@ -1,0 +1,83 @@
+<mat-sidenav-container class="sidenav-container">
+	<mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+	 [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+		<mat-toolbar> <img id="profile-img" class="icon" src="assets/icon.png"></mat-toolbar>
+		<mat-nav-list>
+			<mat-nav-list>
+				<a mat-list-item href="/customer"> Home</a>
+				<a mat-list-item href="/cart">Cart</a>
+				<a mat-list-item href="/trackOrder"> Track Order</a>
+				<a mat-list-item href="/feedback">Feedback</a>
+				<a mat-list-item (click)=" logout()">Logout</a>
+			</mat-nav-list>
+		</mat-nav-list>
+	</mat-sidenav>
+	<mat-sidenav-content>
+		<mat-toolbar color="primary">
+			<button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+				<mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+			</button>
+			<span class="navbar-text white-text">
+				Hi {{userName}}
+			</span>
+
+		</mat-toolbar><br><br>
+	</mat-sidenav-content>
+</mat-sidenav-container>
+<toaster-container [toasterconfig]="config1"></toaster-container>
+<div *ngIf="!carts==0;else other_content"></div>
+<div class="container"><br><br>
+	<h1>Cart Details</h1><br><br>
+
+<div class="container"><br><br>
+	
+	<div *ngIf="na;else other_content">
+		<h4 style="color: red;">Product {{produc}} not available. </h4>
+	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">Product Name</th>
+				<th scope="col">Price ₹</th>
+				<th scope="col">Weight(in gm)</th>
+				<th scope="col">Quantity</th>
+				<th scope="col">Delete</th>
+			</tr>
+		</thead>
+		<tbody *ngFor="let obj of cart">
+			<tr>
+				<td>{{obj.product.productName}}</td>
+				<td>₹ {{obj.quantity*obj.product.price}} </td>
+				<td>{{obj.quantity*obj.product.weight}} gm</td>
+				<td>
+					<button class="plus-btn" type="button" name="button" (click)="increaseQuantity(obj.quantity, obj)">
+						<img src="https://designmodo.com/demo/shopping-cart/plus.svg" alt="" />
+					</button>
+					<input type="text" name="name" value={{obj.quantity}} disabled>
+					<button class="minus-btn" type="button" name="button" (click)="decreaseQuantity(obj.quantity, obj.cartId)">
+						<img src="https://designmodo.com/demo/shopping-cart/minus.svg" alt="" />
+					</button>
+				</td>
+				<td>
+					<button class="btn btn-danger btn-sm" (click)="removefromcart(obj.cartId)" id={{obj.cartId}}><i class="fa fa-trash-o"></i></button>
+				</td>
+			</tr>
+
+		</tbody>
+		<tr>
+			<td><a href="/customer" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+			<td colspan="2" class="hidden-xs"></td>
+			<td class="hidden-xs text-center"><strong></strong></td>
+			
+				<td><a (click)="checkcart()" class="btn btn-success btn-block"> Checkout for ₹{{carts}} <i class="fa fa-angle-right"></i></a></td>
+			
+		</tr>
+	</table>
+</div></div>
+<div class="container" *ngIf="carts==0.0;else other_content" style="margin-left: 35%;
+margin-top: 5%;" >
+	<div class="container">
+	<img  src="assets/empty-cart.png"></div><br>
+	<div class="container">
+	<a href="/customer" class="btn btn-warning" style="margin-left: 17%;"> Continue Shopping</a></div>
+</div>

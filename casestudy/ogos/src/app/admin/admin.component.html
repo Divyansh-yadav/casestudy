@@ -1,0 +1,22 @@
+
+  
+    <ag-grid-angular 
+    style="width: 100%; height: 500px;" 
+    class="ag-theme-balham"
+    [enableSorting]="true"
+    [enableFilter]="true"
+    [rowData]="rowData" 
+    [columnDefs]="columnDefs"
+    [animateRows]="true"
+    [rowSelection]="rowSelection"
+    [pagination]="true"
+    [paginationAutoPageSize]="true"
+    gridOptions.angularCompileRows = true;
+    (gridReady)="onGridReady($event)"
+    rowSelection="multiple"
+    (rowClicked)="onRowClicked($event)"
+
+    >
+</ag-grid-angular>
+ 
+  

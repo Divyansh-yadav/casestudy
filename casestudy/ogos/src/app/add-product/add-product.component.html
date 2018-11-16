@@ -1,0 +1,81 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+    <mat-toolbar><img id="profile-img" class="icon" src="assets/icon.png"></mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="/admin">Product Details</a>
+      <a mat-list-item href="/getAllUsers">User Details</a>
+      <a mat-list-item href="/addProduct">Add Product</a>
+      <a mat-list-item href="/addProductCategory">Create Category</a>
+      <a mat-list-item (click)=" logout()">Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Enter Product Details</span>
+      <span class="navbar-text white-text">
+        Hi {{userName}}
+      </span>
+    </mat-toolbar>
+    <div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<toaster-container [toasterconfig]="config1"></toaster-container>
+<div class="container" style="margin-left: 450px;">
+
+  <div class="card card-container">
+    <div class="form-group">
+      <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
+        <mat-label> Product Name</mat-label>
+        <input matInput [formControl]="productName" required>
+        <mat-error *ngIf="productName.invalid">{{ getNameErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
+        <mat-label> Price</mat-label>
+        <input matInput [formControl]="price" required>
+        <mat-error *ngIf="price.invalid">{{ getPriceErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
+        <mat-label> Quantity</mat-label>
+        <input matInput [formControl]="quantity" required>
+        <mat-error *ngIf="quantity.invalid">{{ getQuantityErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
+        <mat-label> weight</mat-label>
+        <input matInput [formControl]="weight" required>
+        <mat-error *ngIf="weight.invalid">{{ getWeightErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <label>Image URL</label>
+      <input type="file" id="file" (change)="onFileChange($event)"><br>
+
+      <!-- <label>Select Product Category</label>
+      <div *ngFor="let category  of productCategory">
+        <input type="radio" name="productCategory" value={{category.categoryId}} checked [(ngModel)]=product.categoryId>
+        {{category.categoryName}} <br>
+      </div>
+    </div> -->
+
+      <mat-form-field >
+        <mat-label>Select Category</mat-label>
+        <mat-select placeholder="Select Category Name" [formControl]="categoryId" required>
+          <div *ngFor="let category  of productCategory">
+            <mat-option  value={{category.categoryId}}> {{category.categoryName}}</mat-option>
+          </div>
+        </mat-select>
+        <mat-error *ngIf="categoryId.invalid">{{getCompanySizeErrorMessage()}}</mat-error>
+      </mat-form-field>
+<br>
+      <button mat-button color="primary" [disabled]="productName.invalid||price.invalid||quantity.invalid||weight.invalid||categoryId.invalid"
+        (click)="addNewProduct()">Add
+        Product
+      </button>
+    </div>
+  </div>

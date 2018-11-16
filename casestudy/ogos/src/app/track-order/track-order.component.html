@@ -1,0 +1,33 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+    <mat-toolbar> <img id="profile-img" class="icon" src="assets/icon.png"></mat-toolbar>
+    <mat-nav-list>
+        <a mat-list-item href="/customer"> Home</a>
+        <a mat-list-item href="/cart">Cart</a>
+        <a mat-list-item href="/trackOrder"> Track Order</a>
+        <a mat-list-item href="/feedback">Feedback</a>
+        <a mat-list-item (click)=" logout()">Logout</a>
+      </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="navbar-text white-text">
+        Hi {{userName}}
+      </span>
+    </mat-toolbar><toaster-container [toasterconfig]="config1"></toaster-container>
+    <br><br>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<div *ngIf="isorderavailab;else other_content">
+<div class="container">
+    <h1 style="color: green;">Track Your Order</h1><br>
+  <ag-grid-angular style="width: 70%; height: 500px;" class="ag-theme-balham" [enableSorting]="true" [enableFilter]="true"
+    [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true" [rowSelection]="rowSelection"
+    gridOptions.angularCompileRows=true;>
+  </ag-grid-angular>
+</div></div>
+<div class="container" *ngIf="!isorderavailab;else other_content"><h1 style="color: green;">you dont have any order yet</h1><br><a href="/customer"><button  class="btn btn-success">go to home</button> </a></div>
